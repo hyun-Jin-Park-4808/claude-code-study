@@ -1,0 +1,380 @@
+/* 커스텀 스타일 (Tailwind CSS 보완용) */
+
+/* 배경 그라데이션 */
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    min-height: 100vh;
+}
+
+/* 필터 버튼 활성화 스타일 */
+.filter-btn {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #6b7280;
+    border: 2px solid transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* 버킷 리스트 항목 스타일 (카드 디자인) */
+.bucket-item {
+    animation: slideIn 0.3s ease-out;
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 1.25rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 0.75rem !important;
+}
+
+.bucket-item:hover {
+    box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15) !important;
+    transform: translateY(-4px);
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 완료된 항목 스타일 */
+.bucket-item .line-through {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+/* 체크박스 호버 효과 */
+.bucket-item button:first-child {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bucket-item button:first-child:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 12px rgba(102, 126, 234, 0.3);
+}
+
+/* 액션 버튼 스타일 개선 */
+.bucket-item button:not(:first-child) {
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px !important;
+    padding: 0.5rem 0.75rem !important;
+    cursor: pointer;
+    border: none;
+}
+
+.bucket-item button:not(:first-child):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bucket-item button:not(:first-child):active {
+    transform: translateY(0);
+}
+
+/* 스크롤바 스타일 (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 640px) {
+    header h1 {
+        font-size: 2rem !important;
+    }
+
+    header p {
+        font-size: 1rem !important;
+    }
+
+    .bucket-item {
+        flex-direction: column;
+        align-items: flex-start !important;
+        padding: 1rem !important;
+    }
+
+    .bucket-item > div:last-child {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+
+    .bucket-item button:not(:first-child) {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.875rem;
+    }
+
+    .filter-btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    #bucketForm {
+        flex-direction: column !important;
+    }
+
+    #bucketForm input,
+    #bucketForm button {
+        width: 100%;
+    }
+}
+
+/* 입력 필드 포커스 효과 */
+input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 버튼 클릭 효과 */
+button:active {
+    transform: scale(0.98);
+}
+
+/* 빈 상태 메시지 애니메이션 */
+#emptyState {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 모달 백드롭 애니메이션 */
+#editModal {
+    animation: backdropFade 0.3s ease-in;
+    backdrop-filter: blur(4px);
+}
+
+#editModal > div {
+    animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3) !important;
+}
+
+@keyframes backdropFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* 컨테이너 스타일 */
+.container {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* 헤더 스타일 개선 */
+header {
+    margin-bottom: 2.5rem !important;
+    padding: 0 1rem;
+}
+
+header h1 {
+    font-size: 3rem !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800 !important;
+}
+
+header p {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 1.125rem !important;
+}
+
+/* 통계 섹션 개선 */
+.bg-white {
+    background: white !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 입력 폼 스타일 개선 */
+#bucketForm {
+    gap: 0.75rem !important;
+}
+
+#bucketForm input {
+    border-radius: 10px !important;
+    padding: 0.875rem 1.25rem !important;
+    border: 2px solid rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease;
+}
+
+#bucketForm input:focus {
+    border-color: rgba(102, 126, 234, 0.4) !important;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1) !important;
+}
+
+#bucketForm button {
+    border-radius: 10px !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600 !important;
+    padding: 0.875rem 1.5rem !important;
+    border: none;
+    cursor: pointer;
+}
+
+#bucketForm button:hover {
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+#bucketForm button:active {
+    transform: translateY(0);
+}
+
+/* 리스트 컨테이너 간격 */
+#bucketListContainer {
+    gap: 0.75rem !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 빈 상태 메시지 */
+#emptyState {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 1.25rem !important;
+}
+
+#emptyState p:first-child {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* 통계 숫자 애니메이션 */
+#totalCount, #completedCount, #progressCount, #completionRate {
+    transition: all 0.3s ease;
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+    }
+
+    .bg-white {
+        background-color: #2d3748 !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    header h1 {
+        color: #e5e7eb;
+    }
+
+    header p,
+    #emptyState {
+        color: #d1d5db !important;
+    }
+
+    .text-gray-800 {
+        color: #f3f4f6;
+    }
+
+    .text-gray-600,
+    .text-gray-400 {
+        color: #d1d5db;
+    }
+
+    .text-gray-400 {
+        color: #9ca3af;
+    }
+
+    .border-gray-300 {
+        border-color: #4b5563;
+    }
+
+    .bucket-item {
+        background: #2d3748 !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .bucket-item:hover {
+        box-shadow: 0 12px 24px rgba(102, 126, 234, 0.2) !important;
+        border-color: rgba(102, 126, 234, 0.3) !important;
+    }
+
+    .filter-btn {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #d1d5db;
+    }
+
+    .filter-btn:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    #bucketForm input {
+        background-color: #1f2937;
+        color: #f3f4f6;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    #bucketForm input::placeholder {
+        color: #9ca3af;
+    }
+
+    .bucket-item button:not(:first-child) {
+        border-radius: 8px !important;
+    }
+}

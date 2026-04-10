@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>박현진 - 백엔드 개발자</title>
+
+    <!-- Google Fonts: Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'Apple SD Gothic Neo', 'sans-serif'],
+                    },
+                    colors: {
+                        'dark-bg': '#0f172a',
+                        'card-bg': '#0f2744',
+                        'blue-primary': '#3b82f6',
+                        'violet-secondary': '#8b5cf6',
+                        'emerald-tertiary': '#10b981',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            word-break: keep-all;
+        }
+
+        body {
+            background-color: #0f172a;
+        }
+
+        /* Gradient text for hero name */
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Smooth mobile menu transition */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            max-height: 300px;
+        }
+
+        /* Navbar styling */
+        nav {
+            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        nav.scrolled {
+            border-bottom-color: #334155;
+        }
+
+        /* Section title underline */
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 3rem;
+            height: 3px;
+            background: linear-gradient(90deg, #8b5cf6, #10b981);
+            border-radius: 2px;
+        }
+
+        /* Glow effects */
+        .glow-blue {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glow-blue:hover {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Project card hover lift */
+        .project-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(15, 39, 68, 0.8), rgba(15, 23, 42, 0.9));
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+        }
+
+        /* Skill badge hover */
+        .skill-badge {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(15, 39, 68, 0.6), rgba(15, 23, 42, 0.8));
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-badge:hover {
+            border-color: #10b981;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            border: 2px solid #3b82f6;
+            color: #f8fafc;
+            background: rgba(59, 130, 246, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+        }
+    </style>
+</head>
+<body class="text-slate-50 bg-dark-bg">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-6 md:px-12">
+        <!-- Logo -->
+        <a href="#hero" class="text-2xl font-bold text-blue-primary hover:text-blue-400 transition-colors">
+            박현진
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <div class="hidden md:flex gap-8">
+            <a href="#about" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">About</a>
+            <a href="#skills" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">Skills</a>
+            <a href="#projects" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">Projects</a>
+            <a href="#contact" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">Contact</a>
+        </div>
+
+        <!-- Hamburger Menu (Mobile) -->
+        <button id="hamburger" class="md:hidden flex flex-col gap-1 cursor-pointer">
+            <span class="w-6 h-0.5 bg-slate-50 transition-all"></span>
+            <span class="w-6 h-0.5 bg-slate-50 transition-all"></span>
+            <span class="w-6 h-0.5 bg-slate-50 transition-all"></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden fixed top-16 left-0 right-0 bg-card-bg border-b border-slate-700 z-40">
+        <div class="flex flex-col gap-4 p-6">
+            <a href="#about" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">About</a>
+            <a href="#skills" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">Skills</a>
+            <a href="#projects" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">Projects</a>
+            <a href="#contact" class="nav-link text-slate-300 hover:text-blue-primary transition-colors font-medium">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-16 px-6 overflow-hidden">
+        <!-- Background glow -->
+        <div class="absolute inset-0 -z-10">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-primary/25 rounded-full filter blur-3xl"></div>
+            <div class="absolute top-1/3 right-1/4 w-80 h-80 bg-violet-secondary/20 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-72 h-72 bg-emerald-tertiary/15 rounded-full filter blur-3xl"></div>
+        </div>
+
+        <div class="text-center max-w-4xl animate-fade-in-up">
+            <!-- Badge -->
+            <div class="inline-block mb-6 px-4 py-2 bg-blue-primary/20 border border-blue-primary/50 rounded-full">
+                <span class="text-sm font-semibold text-blue-primary">🚀 백엔드 개발자</span>
+            </div>
+
+            <!-- Name with gradient -->
+            <h1 class="text-7xl md:text-8xl font-bold mb-4 gradient-text leading-tight">박현진</h1>
+
+            <!-- Role -->
+            <p class="text-2xl md:text-3xl text-violet-secondary font-semibold mb-6">Backend Developer</p>
+
+            <!-- Introduction -->
+            <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                안녕하세요. 자기주도적 학습역량으로 꾸준히 성장하는 백엔드 개발자, 박현진입니다.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="https://github.com/hyun-Jin-Park-4808" target="_blank" class="btn-primary px-8 py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
+                    <span>GitHub</span>
+                    <span>→</span>
+                </a>
+                <a href="mailto:guswlsdl4808@gmail.com" class="btn-secondary px-8 py-3 rounded-lg font-semibold">
+                    이메일로 연락하기
+                </a>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="flex justify-center animate-bounce">
+                <svg class="w-6 h-6 text-blue-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 md:px-12 max-w-6xl mx-auto">
+        <h2 class="section-title text-4xl font-bold mb-12 text-slate-50">About</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-on-scroll">
+            <!-- Left: Bio -->
+            <div>
+                <p class="text-lg text-slate-300 leading-relaxed mb-6">
+                    저는 <span class="text-blue-primary font-semibold">자기주도적 학습</span>을 통해
+                    <span class="text-violet-secondary font-semibold">꾸준히 성장</span>하는 백엔드 개발자입니다.
+                </p>
+                <p class="text-lg text-slate-300 leading-relaxed mb-6">
+                    Java와 Spring Boot를 기반으로 견고한 백엔드 시스템을 구축하고,
+                    Node.js와 NestJS로 확장 가능한 아키텍처를 설계합니다.
+                </p>
+                <p class="text-lg text-slate-300 leading-relaxed">
+                    데이터베이스 설계부터 API 구현까지 전체 백엔드 개발 사이클을 경험하고 있으며,
+                    <span class="text-emerald-tertiary font-semibold">효율적인 코드</span>와
+                    <span class="text-emerald-tertiary font-semibold">깨끗한 아키텍처</span>를 지향합니다.
+                </p>
+            </div>
+
+            <!-- Right: Highlights -->
+            <div class="bg-slate-800 border border-slate-600 rounded-2xl p-8 shadow-xl shadow-slate-900/50" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));">
+                <div class="space-y-6">
+                    <div class="pb-6 border-b border-slate-700">
+                        <h3 class="text-sm font-semibold text-emerald-tertiary uppercase tracking-wide mb-2">지향점</h3>
+                        <p class="text-slate-300">확장 가능하고 유지보수하기 쉬운 백엔드 시스템 구축</p>
+                    </div>
+                    <div class="pb-6 border-b border-slate-700">
+                        <h3 class="text-sm font-semibold text-blue-primary uppercase tracking-wide mb-2">학습 스타일</h3>
+                        <p class="text-slate-300">문제 해결을 통한 실전 학습과 기술 심화</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-violet-secondary uppercase tracking-wide mb-2">관심사</h3>
+                        <p class="text-slate-300">마이크로서비스, 데이터 처리, 클라우드 아키텍처</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 px-6 md:px-12 bg-gradient-to-b from-slate-900/30 to-dark-bg">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="section-title text-4xl font-bold mb-12 text-slate-50">Skills</h2>
+
+            <!-- Backend Languages -->
+            <div class="mb-12 animate-on-scroll">
+                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4">Backend Languages</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">☕</div>
+                        <p class="font-semibold text-slate-200">Java</p>
+                    </div>
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">📦</div>
+                        <p class="font-semibold text-slate-200">Node.js</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frameworks -->
+            <div class="mb-12 animate-on-scroll" style="animation-delay: 0.1s">
+                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4">Frameworks</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🍃</div>
+                        <p class="font-semibold text-slate-200">Spring Boot</p>
+                    </div>
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🏗️</div>
+                        <p class="font-semibold text-slate-200">NestJS</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="mb-12 animate-on-scroll" style="animation-delay: 0.2s">
+                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4">Languages</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">📘</div>
+                        <p class="font-semibold text-slate-200">TypeScript</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Databases -->
+            <div class="animate-on-scroll" style="animation-delay: 0.3s">
+                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4">Databases</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🗄️</div>
+                        <p class="font-semibold text-slate-200">MySQL</p>
+                    </div>
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🍃</div>
+                        <p class="font-semibold text-slate-200">MongoDB</p>
+                    </div>
+                    <div class="skill-badge border border-slate-600 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">⚡</div>
+                        <p class="font-semibold text-slate-200">Redis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 px-6 md:px-12">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="section-title text-4xl font-bold mb-12 text-slate-50">Projects</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Project Card 1 -->
+                <div class="project-card bg-card-bg border border-slate-700 rounded-2xl overflow-hidden animate-on-scroll shadow-lg">
+                    <!-- Top colored bar -->
+                    <div class="h-1 bg-gradient-to-r from-blue-primary to-violet-secondary"></div>
+
+                    <div class="p-6">
+                        <!-- Project number -->
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-slate-50">프로젝트 #01</h3>
+                            <span class="text-sm font-semibold text-blue-primary/60">#01</span>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-slate-400 mb-6 min-h-[60px]">
+                            Spring Boot 기반의 마이크로서비스 아키텍처 설계 및 구현 프로젝트입니다.
+                        </p>
+
+                        <!-- Tech tags -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">Java</span>
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">Spring Boot</span>
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">MySQL</span>
+                        </div>
+
+                        <!-- Links -->
+                        <div class="flex gap-4 text-sm font-semibold">
+                            <a href="#" class="text-blue-primary hover:text-blue-400 transition-colors flex items-center gap-1">
+                                GitHub <span>→</span>
+                            </a>
+                            <a href="#" class="text-violet-secondary hover:text-violet-400 transition-colors flex items-center gap-1">
+                                Live Demo <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="project-card bg-card-bg border border-slate-700 rounded-2xl overflow-hidden animate-on-scroll shadow-lg" style="animation-delay: 0.1s">
+                    <!-- Top colored bar -->
+                    <div class="h-1 bg-gradient-to-r from-violet-secondary to-emerald-tertiary"></div>
+
+                    <div class="p-6">
+                        <!-- Project number -->
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-slate-50">프로젝트 #02</h3>
+                            <span class="text-sm font-semibold text-violet-secondary/60">#02</span>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-slate-400 mb-6 min-h-[60px]">
+                            NestJS를 활용한 실시간 데이터 처리 API 개발. Redis 캐싱 및 최적화 포함.
+                        </p>
+
+                        <!-- Tech tags -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">Node.js</span>
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">NestJS</span>
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">Redis</span>
+                        </div>
+
+                        <!-- Links -->
+                        <div class="flex gap-4 text-sm font-semibold">
+                            <a href="#" class="text-blue-primary hover:text-blue-400 transition-colors flex items-center gap-1">
+                                GitHub <span>→</span>
+                            </a>
+                            <a href="#" class="text-violet-secondary hover:text-violet-400 transition-colors flex items-center gap-1">
+                                Live Demo <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="project-card bg-card-bg border border-slate-700 rounded-2xl overflow-hidden animate-on-scroll shadow-lg" style="animation-delay: 0.2s">
+                    <!-- Top colored bar -->
+                    <div class="h-1 bg-gradient-to-r from-emerald-tertiary to-blue-primary"></div>
+
+                    <div class="p-6">
+                        <!-- Project number -->
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-slate-50">프로젝트 #03</h3>
+                            <span class="text-sm font-semibold text-emerald-tertiary/60">#03</span>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-slate-400 mb-6 min-h-[60px]">
+                            MongoDB와 TypeScript를 활용한 대규모 데이터 관리 시스템 구축 프로젝트.
+                        </p>
+
+                        <!-- Tech tags -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">TypeScript</span>
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">MongoDB</span>
+                            <span class="text-xs font-semibold bg-emerald-tertiary/20 text-emerald-tertiary border border-emerald-tertiary/50 rounded-full px-3 py-1">Node.js</span>
+                        </div>
+
+                        <!-- Links -->
+                        <div class="flex gap-4 text-sm font-semibold">
+                            <a href="#" class="text-blue-primary hover:text-blue-400 transition-colors flex items-center gap-1">
+                                GitHub <span>→</span>
+                            </a>
+                            <a href="#" class="text-violet-secondary hover:text-violet-400 transition-colors flex items-center gap-1">
+                                Live Demo <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 md:px-12 bg-gradient-to-b from-dark-bg to-slate-900/30">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="section-title text-4xl font-bold mb-12 text-slate-50">Contact</h2>
+
+            <p class="text-lg text-slate-300 mb-12 animate-on-scroll">
+                새로운 기회에 열려있습니다. 편하신 방식으로 연락주세요!
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 animate-on-scroll">
+                <!-- Email Card -->
+                <a href="mailto:guswlsdl4808@gmail.com" class="group bg-card-bg border border-slate-700 rounded-2xl p-8 shadow-lg shadow-slate-900/40 hover:border-blue-primary transition-all duration-300 hover:shadow-[0_12px_40px_rgba(59,130,246,0.3)]">
+                    <div class="flex items-center gap-4">
+                        <div class="text-4xl">✉️</div>
+                        <div class="text-left">
+                            <p class="text-sm text-slate-400 mb-1">Email</p>
+                            <p class="text-lg font-semibold text-slate-50 group-hover:text-blue-primary transition-colors">
+                                guswlsdl4808@gmail.com
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- GitHub Card -->
+                <a href="https://github.com/hyun-Jin-Park-4808" target="_blank" class="group bg-card-bg border border-slate-700 rounded-2xl p-8 shadow-lg shadow-slate-900/40 hover:border-violet-secondary transition-all duration-300 hover:shadow-[0_12px_40px_rgba(139,92,246,0.3)]">
+                    <div class="flex items-center gap-4">
+                        <div class="text-4xl">🔗</div>
+                        <div class="text-left">
+                            <p class="text-sm text-slate-400 mb-1">GitHub</p>
+                            <p class="text-lg font-semibold text-slate-50 group-hover:text-violet-secondary transition-colors">
+                                github.com/hyun-Jin-Park-4808
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-8 px-6 md:px-12 text-center text-slate-500">
+        <p class="mb-2">박현진 · 백엔드 개발자</p>
+        <p class="text-sm mb-2">© 2026 박현진. All rights reserved.</p>
+        <p class="text-sm text-slate-600">Built with HTML, CSS & JavaScript</p>
+    </footer>
+
+    <script>
+        // ===== Mobile Menu Toggle =====
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = mobileMenu.querySelectorAll('.nav-link');
+
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // ===== Navbar Scroll State =====
+        const navbar = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== Active Nav Link Highlighting =====
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '-100px 0px -66% 0px'
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+
+                    // Remove active class from all nav links
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('text-blue-primary');
+                        link.classList.add('text-slate-300');
+                    });
+
+                    // Add active class to corresponding nav link
+                    const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                    if (activeLink) {
+                        activeLink.classList.remove('text-slate-300');
+                        activeLink.classList.add('text-blue-primary');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section[id]').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // ===== Scroll Fade-in Animations =====
+        const fadeObserverOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, fadeObserverOptions);
+
+        // Observe all elements with animate-on-scroll
+        document.querySelectorAll('.animate-on-scroll').forEach(element => {
+            fadeObserver.observe(element);
+        });
+    </script>
+</body>
+</html>
