@@ -1,0 +1,11 @@
+{
+  "model": "haiku",
+  "permissions": {
+    "allow": [
+      "Bash"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "plan"
+  }
+}
