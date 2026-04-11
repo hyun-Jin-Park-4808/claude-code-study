@@ -38,7 +38,7 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div className="w-full space-y-6 p-4 md:p-6">
+    <div className="mx-auto w-full max-w-7xl space-y-6 p-4 md:p-6">
       {/* 헤더 */}
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">대시보드</h1>
