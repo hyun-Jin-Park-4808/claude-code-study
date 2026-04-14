@@ -2,12 +2,13 @@
   "name": "claude-nextjs-starterkit",
   "version": "1.0.0",
   "description": "빠른 웹 개발을 위한 Next.js starter kit",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext ts,tsx"
+    "lint": "eslint ."
   },
   "dependencies": {
     "next": "^15",

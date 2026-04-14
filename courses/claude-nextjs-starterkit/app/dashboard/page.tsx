@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { BarChart3, TrendingUp, Users, Activity } from 'lucide-react'
+import Link from 'next/link'
 
 export default function DashboardPage() {
   const stats = [
@@ -109,9 +110,15 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-2">
-              <Badge variant="secondary" className="w-full justify-center cursor-pointer">설정</Badge>
-              <Badge variant="secondary" className="w-full justify-center cursor-pointer">도움말</Badge>
-              <Badge variant="secondary" className="w-full justify-center cursor-pointer">문서</Badge>
+              <Button variant="secondary" className="w-full" asChild>
+                <Link href="#settings">설정</Link>
+              </Button>
+              <Button variant="secondary" className="w-full" asChild>
+                <Link href="#help">도움말</Link>
+              </Button>
+              <Button variant="secondary" className="w-full" asChild>
+                <Link href="#docs">문서</Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
